@@ -1,3 +1,4 @@
+from copy import deepcopy
 from random import randint
 
 from Cell import Cell
@@ -15,3 +16,19 @@ class Main:
     def __initialize_cells(self):
         for stove in self.stove_coordinates:
             self.city_map[stove.x][stove.y].change_level_of_smog_production(STOVE_SMOG_PRODUCTION)
+
+    def update_map(self):
+        first_map = deepcopy(self.city_map)
+
+        for row in range(MAP_HEIGHT):
+            for col in range(MAP_WIDTH):
+                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)
+                first_map[row][col].contamination_level = smog_contamination
+
+    def calculate_smog_contamination_for_given_cell(self, row, col):
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                pass
+                # TODO: SUM FROM ALL NEIGHBORHOOD
+
+        return 1

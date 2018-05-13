@@ -26,9 +26,11 @@ class Main:
                 first_map[row][col].contamination_level = smog_contamination
 
     def calculate_smog_contamination_for_given_cell(self, row, col):
+        sum = 0
         for i in range(-1, 2):
             for j in range(-1, 2):
-                pass
-                # TODO: SUM FROM ALL NEIGHBORHOOD
+                if 0 <= row + i < MAP_HEIGHT and 0 <= col + j < MAP_WIDTH and (i != 0 and j != 0):
+                    sum += self.city_map[row + i][col + i].contamination_level
+                    # TODO: ADD UNIT TESTS TO THIS
 
-        return 1
+        return sum

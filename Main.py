@@ -7,10 +7,13 @@ from configuration import *
 
 
 class Main:
-    def __init__(self):
-        self.city_map = [[Cell() for _ in range(MAP_WIDTH)] for _ in range(MAP_HEIGHT)]
-        self.stove_coordinates = [Point(randint(0, MAP_HEIGHT - 1), randint(0, MAP_WIDTH - 1))
-                                  for _ in range(NUMBER_OF_STOVES)]
+    def __init__(self, map_width, map_height):
+        self.map_width = map_width
+        self.map_height = map_height
+        self.number_of_stoves = map_height * map_width // 20
+        self.city_map = [[Cell() for _ in range(self.map_width)] for _ in range(map_height)]
+        self.stove_coordinates = [Point(randint(0, map_height - 1), randint(0, self.map_width - 1))
+                                  for _ in range(self.number_of_stoves)]
         self.__initialize_cells()
 
     def __initialize_cells(self):
@@ -20,8 +23,8 @@ class Main:
     def update_map(self):
         first_map = deepcopy(self.city_map)
 
-        for row in range(MAP_HEIGHT):
-            for col in range(MAP_WIDTH):
+        for row in range(self.map_height):
+            for col in range(self.map_height):
                 smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)
                 first_map[row][col].contamination_level = smog_contamination
 
@@ -29,8 +32,8 @@ class Main:
         sum = 0
         for i in range(-1, 2):
             for j in range(-1, 2):
-                if 0 <= row + i < MAP_HEIGHT and 0 <= col + j < MAP_WIDTH and (i != 0 and j != 0):
-                    sum += self.city_map[row + i][col + i].contamination_level
+                if 0 <= row + i < self.map_height and 0 <= col + j < self.map_height and (i != 0 or j != 0):
+                    sum += self.city_map[row + i][col + j].contamination_level
                     # TODO: ADD UNIT TESTS TO THIS
 
         return sum

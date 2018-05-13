@@ -28,6 +28,12 @@ class Main:
                 smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)
                 first_map[row][col].contamination_level = smog_contamination
 
+        self.substitute_map(first_map)
+
+    def substitute_map(self, first_map):
+        self.city_map = deepcopy(self.first_map)
+
+
     def calculate_smog_contamination_for_given_cell(self, row, col):
         sum = 0
         for i in range(-1, 2):

@@ -31,8 +31,7 @@ class Main:
         self.substitute_map(first_map)
 
     def substitute_map(self, first_map):
-        self.city_map = deepcopy(self.first_map)
-
+        self.city_map = deepcopy(first_map)
 
     def calculate_smog_contamination_for_given_cell(self, row, col):
         sum = 0

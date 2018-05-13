@@ -31,9 +31,17 @@ class Main:
     def calculate_smog_contamination_for_given_cell(self, row, col):
         sum = 0
         for i in range(-1, 2):
-            for j in range(-1, 2):
-                if 0 <= row + i < self.map_height and 0 <= col + j < self.map_height and (i != 0 or j != 0):
-                    sum += self.city_map[row + i][col + j].contamination_level
-                    # TODO: ADD UNIT TESTS TO THIS
+            sum += self.calculate_smog_contamination_for_given_cell_row(row, col, i)
 
         return sum
+
+    def calculate_smog_contamination_for_given_cell_row(self, row, col, i):
+        sum = 0
+        for j in range(-1, 2):
+            if self.is_position_valid(row, col, i, j):
+                sum += self.city_map[row + i][col + j].contamination_level
+
+        return sum
+
+    def is_position_valid(self, row, col, i, j):
+        return 0 <= row + i < self.map_height and 0 <= col + j < self.map_height and (i != 0 or j != 0)

@@ -1,4 +1,3 @@
-import pytest
 from Main import Main
 
 starting_cell = [3, 3]

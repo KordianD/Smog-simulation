@@ -10,7 +10,7 @@ class Main:
     def __init__(self, map_width, map_height):
         self.map_width = map_width
         self.map_height = map_height
-        self.number_of_stoves = map_height * map_width // 20
+        self.number_of_stoves = int(map_height * map_width * STOVE_PRODUCTION_PERCENTAGE)
         self.city_map = [[Cell() for _ in range(self.map_width)] for _ in range(map_height)]
         self.stove_coordinates = [Point(randint(0, map_height - 1), randint(0, self.map_width - 1))
                                   for _ in range(self.number_of_stoves)]

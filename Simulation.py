@@ -1,7 +1,7 @@
 from Main import Main
 from Plotter import Plotter
 
-simulation = Main(20, 20)
+simulation = Main(100, 100)
 
 simulation.start_simulation(20)
 

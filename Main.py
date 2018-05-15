@@ -22,6 +22,7 @@ class Main:
 
     def start_simulation(self, number_of_iteration):
         for _ in range(number_of_iteration):
+            print(_)
             self.update_map()
 
     def update_map(self):

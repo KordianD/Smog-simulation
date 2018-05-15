@@ -21,8 +21,8 @@ class Main:
             self.city_map[stove.x][stove.y].change_level_of_smog_production(STOVE_SMOG_PRODUCTION)
 
     def start_simulation(self, number_of_iteration):
-        for _ in range(number_of_iteration):
-            print(_)
+        for iteration in range(number_of_iteration):
+            print("Number of iteration " + str(iteration))
             self.update_map()
 
     def update_map(self):
@@ -30,7 +30,8 @@ class Main:
 
         for row in range(self.map_height):
             for col in range(self.map_height):
-                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col) + self.city_map[row][col].smog_production
+                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)*CELL_INFLUENCE \
+                                     + self.city_map[row][col].smog_production
                 first_map[row][col].contamination_level = smog_contamination
 
         self.substitute_map(first_map)

@@ -20,12 +20,16 @@ class Main:
         for stove in self.stove_coordinates:
             self.city_map[stove.x][stove.y].change_level_of_smog_production(STOVE_SMOG_PRODUCTION)
 
+    def start_simulation(self, number_of_iteration):
+        for _ in range(number_of_iteration):
+            self.update_map()
+
     def update_map(self):
         first_map = deepcopy(self.city_map)
 
         for row in range(self.map_height):
             for col in range(self.map_height):
-                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)
+                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col) + self.city_map[row][col].smog_production
                 first_map[row][col].contamination_level = smog_contamination
 
         self.substitute_map(first_map)

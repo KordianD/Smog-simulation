@@ -13,3 +13,4 @@ def test_calculate_smog_contamination_for_given_cell():
     main = Main(5, 5)
     fill_city_map(main.city_map)
     assert 80 == main.calculate_smog_contamination_for_given_cell(starting_cell[0], starting_cell[1])
+    assert 50 == main.calculate_smog_contamination_for_given_cell(starting_cell[0]-1, starting_cell[1])

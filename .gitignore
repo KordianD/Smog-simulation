@@ -1,0 +1,10 @@
+
+.idea/misc.xml
+.idea/modules.xml
+.idea/Smog-simulation.iml
+.idea/vcs.xml
+.idea/workspace.xml
+__pycache__/Cell.cpython-36.pyc
+__pycache__/configuration.cpython-36.pyc
+__pycache__/Point.cpython-36.pyc
+*.pyc

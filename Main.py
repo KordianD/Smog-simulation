@@ -32,7 +32,7 @@ class Main:
     def update_map(self):
         first_map = deepcopy(self.city_map)
 
-        for row in range(self.map_height):
+        for row in range(self.map_width):
             for col in range(self.map_height):
                 smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)  #niewielkie zmiany majace ograniczyc uciekanie do nieskonczonosci
                 first_map[row][col].contamination_level = smog_contamination

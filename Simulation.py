@@ -3,7 +3,7 @@ from Plotter import Plotter
 
 simulation = Main(10, 10)
 simulation.read_map()
-simulation.start_simulation(20)
+simulation.start_simulation(10)
 #nie rysuje całej mapki
 
 

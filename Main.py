@@ -60,7 +60,7 @@ class Main:
         return sum
 
     def is_position_valid(self, row, col, i, j):
-        return 0 <= row + i < self.map_height and 0 <= col + j < self.map_height and (i != 0 or j != 0)
+        return 0 <= row + i < self.map_height and 0 <= col + j < self.map_width and (i != 0 or j != 0)
 
     def read_map(self):
         img = misc.imread("input.png")

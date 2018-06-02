@@ -46,13 +46,13 @@ class Main:
         sum = self.city_map[row][col].smog_production
         old = self.city_map[row][col].contamination_level
         COEFF=SPREAD_COEFFICIENT*HUMIDITY/(WIND*RAIN)
-        for i in range(-1, 2):      #TRZBA POWIEKSZYC INDEKSY OD -2 do 3 WTEDY DZIAŁA PIEKNIE, WTEDY TRZEBA TEZ ZMIENIC WIND_DIR NA WIEKSZE
-            for j in range(-1, 2):
+        for i in range(-2, 3):      #POPRAWIONY NA WIEKSZY
+            for j in range(-2, 3):
                 if self.is_position_valid(row, col, i, j):
                     source = self.city_map[row + i][col + j].contamination_level
                     if source > old:
-                        if sum + WIND_DIR[1+i][1+j]*COEFF*source <= source: #COS Z INDEKSEM MOZE BYC NIE TAK> TRZEBA SPRAWDZIC
-                            sum += WIND_DIR[1+i][1+j]*COEFF * source    #COS Z INDEKSEM MOZE BYC NIE TAK> TRZEBA SPRAWDZIC
+                        if sum + WIND_DIR[2+i][2+j]*COEFF*source <= source: #POPRAWIONY INDEX
+                            sum += WIND_DIR[2+i][2+j]*COEFF * source    #POPRAWIONY INDEX
                         else:
                             sum = source
                     elif sum < old:

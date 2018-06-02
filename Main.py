@@ -4,10 +4,7 @@ from Plotter import Plotter
 from Cell import Cell
 from Point import Point
 from scipy import misc
-import numpy
-import matplotlib.image as mpimg
 from configuration import *
-
 
 class Main:
     def __init__(self, map_width, map_height):
@@ -41,22 +38,25 @@ class Main:
         self.substitute_map(first_map)
 
     def substitute_map(self, first_map):
-        self.city_map = deepcopy(first_map)
+        self.city_map = first_map
+        #!!!!!!!!!!!!!!!!!!!!!!
+        #USUNALEM DEEPCOPY, chyba nie było konieczne, przyspiesza symulacje
 
-    def calculate_smog_contamination_for_given_cell(self, row, col):
-        sum = 0
+    def calculate_smog_contamination_for_given_cell(self, row, col): #JUTRO OPISZE CO TU ZROBILEM :)
+        sum = self.city_map[row][col].smog_production
+        old = self.city_map[row][col].contamination_level
+        COEFF=SPREAD_COEFFICIENT*HUMIDITY/(WIND*RAIN)
         for i in range(-1, 2):
-            sum += self.calculate_smog_contamination_for_given_cell_row(row, col, i)
-        sum = SPREAD_COEFFICIENT*sum + self.city_map[row][col].smog_production
-        # TRZEBA UWZGLEDNIC WIATR
-        return sum
-
-    def calculate_smog_contamination_for_given_cell_row(self, row, col, i):
-        sum = 0
-        for j in range(-1, 2):
-            if self.is_position_valid(row, col, i, j):
-                sum += self.city_map[row + i][col + j].contamination_level
-    #jak zrobić żeby nie uciekało do nieskonczonosci?
+            for j in range(-1, 2):
+                if self.is_position_valid(row, col, i, j):
+                    source = self.city_map[row + i][col + j].contamination_level
+                    if source > old:
+                        if sum + WIND_DIR[i][j]*COEFF*source <= source:
+                            sum += WIND_DIR[i][j]*COEFF * source
+                        else:
+                            sum = source
+                    elif sum < old:
+                        sum = old
         return sum
 
     def is_position_valid(self, row, col, i, j):
@@ -69,7 +69,6 @@ class Main:
         height = img.shape[0]
         print(width)
         print(height)
-        print(img[70][111][1])
         self.map_width = width
         self.map_height = height
         self.city_map = [[Cell() for _ in range(width)] for _ in range(height)]

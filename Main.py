@@ -46,17 +46,20 @@ class Main:
         sum = self.city_map[row][col].smog_production
         old = self.city_map[row][col].contamination_level
         COEFF=SPREAD_COEFFICIENT*HUMIDITY/(WIND*RAIN)
+        temp=[]
         for i in range(-2, 3):      #POPRAWIONY NA WIEKSZY
             for j in range(-2, 3):
                 if self.is_position_valid(row, col, i, j):
-                    source = self.city_map[row + i][col + j].contamination_level
-                    if source > old:
-                        if sum + WIND_DIR[2+i][2+j]*COEFF*source <= source: #POPRAWIONY INDEX
-                            sum += WIND_DIR[2+i][2+j]*COEFF * source    #POPRAWIONY INDEX
-                        else:
-                            sum = source
-                    elif sum < old:
-                        sum = old
+                    source = WIND_DIR[2+i][2+j]*self.city_map[row + i][col + j].contamination_level
+                    temp.append(source)
+        temp.sort()
+        #temp.reverse()
+        for k in range(len(temp)):
+            if sum +COEFF*temp[k] < FLOW_RESISTANCE*temp[k]:
+                sum+= COEFF*temp[k]
+            elif sum < temp[k]:
+                sum=FLOW_RESISTANCE*temp[k]
+
         return sum
 
     def is_position_valid(self, row, col, i, j):

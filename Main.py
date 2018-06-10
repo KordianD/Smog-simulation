@@ -1,16 +1,16 @@
 from copy import deepcopy
 from random import randint
-from Plotter import Plotter
 from Cell import Cell
 from Point import Point
 from scipy import misc
 from configuration import *
+from numba import jit
 
 class Main:
     def __init__(self, map_width, map_height):
         self.map_width = map_width
         self.map_height = map_height
-        self.number_of_stoves = int(map_height * map_width * STOVE_PRODUCTION_PERCENTAGE)       # KUCHENKI
+        self.number_of_stoves = int(map_height * map_width * STOVE_PRODUCTION_PERCENTAGE)
         self.city_map = [[Cell() for _ in range(self.map_width)] for _ in range(map_height)]
         self.stove_coordinates = [Point(randint(0, map_height - 1), randint(0, self.map_width - 1))
                                   for _ in range(self.number_of_stoves)]
@@ -20,11 +20,13 @@ class Main:
         for stove in self.stove_coordinates:
             self.city_map[stove.x][stove.y].change_level_of_smog_production(STOVE_SMOG_PRODUCTION)
 
+    @jit
     def start_simulation(self, number_of_iteration):
         for iteration in range(number_of_iteration):
             print("Number of iteration " + str(iteration + 1))
             self.update_map()
 
+    @jit
     def update_map(self):
         first_map = deepcopy(self.city_map)
 
@@ -38,14 +40,13 @@ class Main:
 
     def substitute_map(self, first_map):
         self.city_map = first_map
-        #!!!!!!!!!!!!!!!!!!!!!!
-        #USUNALEM DEEPCOPY, chyba nie było konieczne, przyspiesza symulacje
 
-    def calculate_smog_contamination_for_given_cell(self, row, col): 
+
+    def calculate_smog_contamination_for_given_cell(self, row, col):
         sum = self.city_map[row][col].smog_production
-        old = self.city_map[row][col].contamination_level
         COEFF=SPREAD_COEFFICIENT*HUMIDITY/(WIND*RAIN)
-        temp=[]
+        temp = []
+
         for i in range(-2, 3):
             for j in range(-2, 3):
                 if self.is_position_valid(row, col, i, j):
@@ -53,10 +54,10 @@ class Main:
                     temp.append(source)
         temp.sort()
         for k in range(len(temp)):
-            if sum +COEFF*temp[k] < FLOW_RESISTANCE*temp[k]:
-                sum+= COEFF*temp[k]
+            if sum + COEFF*temp[k] < FLOW_RESISTANCE*temp[k]:
+                sum += COEFF*temp[k]
             elif sum < temp[k]:
-                sum=FLOW_RESISTANCE*temp[k]
+                sum = FLOW_RESISTANCE*temp[k]
 
         return sum
 
@@ -73,7 +74,6 @@ class Main:
         self.map_width = width
         self.map_height = height
         self.city_map = [[Cell() for _ in range(width)] for _ in range(height)]
-
 
         for row in range(height):
             for col in range(width):

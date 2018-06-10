@@ -24,14 +24,13 @@ class Main:
         for iteration in range(number_of_iteration):
             print("Number of iteration " + str(iteration + 1))
             self.update_map()
-            #Plotter.plot_city_map_contamination_level(self.city_map)
 
     def update_map(self):
         first_map = deepcopy(self.city_map)
 
         for row in range(self.map_height):
             for col in range(self.map_width):
-                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)  #niewielkie zmiany majace ograniczyc uciekanie do nieskonczonosci
+                smog_contamination = self.calculate_smog_contamination_for_given_cell(row, col)
                 first_map[row][col].contamination_level = smog_contamination
                 first_map[row][col].smog_production = self.city_map[row][col].smog_production
 
@@ -42,18 +41,17 @@ class Main:
         #!!!!!!!!!!!!!!!!!!!!!!
         #USUNALEM DEEPCOPY, chyba nie było konieczne, przyspiesza symulacje
 
-    def calculate_smog_contamination_for_given_cell(self, row, col): #JUTRO OPISZE CO TU ZROBILEM :)
+    def calculate_smog_contamination_for_given_cell(self, row, col): 
         sum = self.city_map[row][col].smog_production
         old = self.city_map[row][col].contamination_level
         COEFF=SPREAD_COEFFICIENT*HUMIDITY/(WIND*RAIN)
         temp=[]
-        for i in range(-2, 3):      #POPRAWIONY NA WIEKSZY
+        for i in range(-2, 3):
             for j in range(-2, 3):
                 if self.is_position_valid(row, col, i, j):
                     source = WIND_DIR[2+i][2+j]*self.city_map[row + i][col + j].contamination_level
                     temp.append(source)
         temp.sort()
-        #temp.reverse()
         for k in range(len(temp)):
             if sum +COEFF*temp[k] < FLOW_RESISTANCE*temp[k]:
                 sum+= COEFF*temp[k]
@@ -80,4 +78,3 @@ class Main:
         for row in range(height):
             for col in range(width):
                 self.city_map[row][col].smog_production = img[row][col][1]
-        #nie rysuje całej mapki
